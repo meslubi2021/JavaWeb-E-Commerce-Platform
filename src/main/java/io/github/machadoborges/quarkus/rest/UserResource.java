@@ -3,6 +3,7 @@ package io.github.machadoborges.quarkus.rest;
 import io.github.machadoborges.quarkus.domain.model.User;
 import io.github.machadoborges.quarkus.domain.repository.UserRepository;
 import io.github.machadoborges.quarkus.rest.dto.CreateUserRequest;
+import io.github.machadoborges.quarkus.rest.dto.ResponseError;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 
@@ -37,9 +38,9 @@ public class UserResource {
         Set<ConstraintViolation<CreateUserRequest>> violations = validator.validate(userRequest);
 
         if(!violations.isEmpty()) {
-            ConstraintViolation<CreateUserRequest> error = violations.stream().findAny().get();
-            String errorMessage = error.getMessage();
-            return Response.status(400).entity(errorMessage).build();
+            return ResponseError
+                    .createFromValidation(violations)
+                    .withStatusCode(ResponseError.UNPROCESSABLE_ENTITY_STATUS);
         }
 
         User user = new User();
@@ -48,7 +49,10 @@ public class UserResource {
 
         repository.persist(user);
 
-        return Response.ok(user).build();
+        return Response
+                .status(Response.Status.CREATED.getStatusCode())
+                .entity(user)
+                .build();
     }
 
     @GET
@@ -61,10 +65,8 @@ public class UserResource {
     @Path("{id}")
     public Response findUsers(@PathParam("id") Long id){
         User user = repository.findById(id);
-
         if(user != null)
             return Response.ok(user).build();
-
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
@@ -76,7 +78,7 @@ public class UserResource {
 
         if (user != null) {
             repository.delete(user);
-            return Response.ok().build();
+            return Response.noContent().build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
@@ -90,7 +92,7 @@ public class UserResource {
         if(user != null){
             user.setName(userData.getName());
             user.setAge(userData.getAge());
-            return Response.ok().build();
+            return Response.noContent().build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
