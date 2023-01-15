@@ -2,6 +2,8 @@ package io.github.machadoborges.quarkus.rest;
 
 import io.github.machadoborges.quarkus.domain.model.User;
 import io.github.machadoborges.quarkus.rest.dto.CreateUserRequest;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -24,7 +26,9 @@ public class UserResource {
         return Response.ok(user).build();
     }
 
-    @GET Response listAllUsers(){
-        return Response.ok().build();
+    @GET
+    public Response listAllUsers(){
+        PanacheQuery<User> query = User.findAll();
+        return Response.ok(query.list()).build();
     }
 }
