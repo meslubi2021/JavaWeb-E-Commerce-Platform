@@ -31,4 +31,23 @@ public class UserResource {
         PanacheQuery<User> query = User.findAll();
         return Response.ok(query.list()).build();
     }
+
+    @DELETE
+    @Path("{id}")
+    @Transactional
+    public Response deleteUser(@PathParam("id") Long id){
+        User user = User.findById(id);
+
+        if (user != null) {
+            user.delete();;
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @PUT
+    @Path("{id}")
+    public Response updateUser(@PathParam("id") Long id, CreateUserRequest userData){
+        return Response.ok().build();
+    }
 }
