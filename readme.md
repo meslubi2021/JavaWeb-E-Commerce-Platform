@@ -1,11 +1,6 @@
-<div align="center">
-  <img src="https://exemplo.com/logo.png" alt="Logo do E-Commerce" width="200">
-</div>
-
 # Backend Java - E-Commerce
 
-Bem-vindo ao backend do nosso sistema de E-Commerce! Abaixo, você encontrará uma lista dos principais endpoints que podem ser acessados para interagir com nossa plataforma.
-
+Bem-vindo ao backend do nosso sistema de E-Commerce! Abaixo, você encontrará uma lista dos principais endpoints que poderão ser acessados no sistema futuro!
 ## Índice
 
 - [Autenticação](#autenticação)
