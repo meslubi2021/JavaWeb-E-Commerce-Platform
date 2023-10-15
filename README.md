@@ -1,60 +1,119 @@
-# quarkus01 Project
+# Backend Java - E-Commerce
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Bem-vindo ao backend do nosso sistema de E-Commerce! Abaixo, você encontrará uma lista dos principais endpoints que poderão ser acessados no sistema futuro!
+## Índice
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+- [Autenticação](#autenticação)
+- [Produtos](#produtos)
+- [Carrinho de Compras](#carrinho-de-compras)
+- [Registro de Usuário](#registro-de-usuário)
 
-## Running the application in dev mode
+## Autenticação
 
-You can run your application in dev mode that enables live coding using:
-```shell script
-./mvnw compile quarkus:dev
-```
+### `/market/login` (Rota não autenticada) - POST
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+![Endpoint](https://img.icons8.com/color/48/000000/api-settings.png)
 
-## Packaging and running the application
+Este endpoint é usado para autenticar os usuários no sistema.
 
-The application can be packaged using:
-```shell script
-./mvnw package
-```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+**Requisição:**
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+- Recebe o email e senha do usuário.
 
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
+**Resposta:**
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+- Valida as credenciais do usuário e retorna um token de autenticação.
 
-## Creating a native executable
+![Response](https://img.icons8.com/color/48/000000/api-settings.png)
 
-You can create a native executable using: 
-```shell script
-./mvnw package -Pnative
-```
+### `/market/cart/add` (Rota autenticada) - POST
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
-```
+![Endpoint](https://img.icons8.com/color/48/000000/api-settings.png)
 
-You can then execute your native executable with: `./target/quarkus01-1.0-runner`
+Use este endpoint para adicionar um produto ao carrinho de compras do usuário.
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html.
+**Requisição:**
 
-## Related Guides
+- Recebe o hash como referência para identificar o carrinho.
+- Recebe o ID do produto a ser adicionado.
 
-- RESTEasy Classic ([guide](https://quarkus.io/guides/resteasy)): REST endpoint framework implementing JAX-RS and more
+**Resposta:**
 
-## Provided Code
+- Adiciona o produto ao carrinho do usuário.
 
-### RESTEasy JAX-RS
+![Response](https://img.icons8.com/color/48/000000/api-settings.png)
 
-Easily start your RESTful Web Services
+## Produtos
 
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
+### `/market/home/product` (Rota autenticada) - GET
+
+![Endpoint](https://img.icons8.com/color/48/000000/api-settings.png)
+
+Este endpoint retorna a lista de produtos com base na categoria fornecida.
+
+**Requisição:**
+
+- Recebe a categoria do produto como parâmetro.
+
+**Resposta:**
+
+- Retorna a lista de produtos da categoria especificada.
+
+![Response](https://img.icons8.com/color/48/000000/api-settings.png)
+
+### `/market/register` (Rota não autenticada) - POST
+
+![Endpoint](https://img.icons8.com/color/48/000000/api-settings.png)
+
+Use este endpoint para registrar um novo usuário no sistema.
+
+**Requisição:**
+
+- Recebe nome, email e senha do usuário.
+
+**Resposta:**
+
+- Registra o novo usuário no sistema.
+
+![Response](https://img.icons8.com/color/48/000000/api-settings.png)
+
+## Carrinho de Compras
+
+### `/market/cart/home/remove` (Rota autenticada) - DELETE
+
+![Endpoint](https://img.icons8.com/color/48/000000/api-settings.png)
+
+Este endpoint permite ao usuário remover um produto do carrinho.
+
+**Requisição:**
+
+- Recebe o ID do produto a ser removido.
+- Requer autenticação do usuário por meio de token ou hash.
+
+**Resposta:**
+
+- Remove o produto do carrinho na base de dados.
+
+![Response](https://img.icons8.com/color/48/000000/api-settings.png)
+
+### `/market/home/cart` (Rota autenticada) - GET
+
+![Endpoint](https://img.icons8.com/color/48/000000/api-settings.png)
+
+Este endpoint retorna o carrinho de compras do usuário.
+
+**Requisição:**
+
+- Recebe o token do usuário (ou o hash correspondente).
+
+**Resposta:**
+
+- Retorna o carrinho de compras do usuário.
+
+![Response](https://img.icons8.com/color/48/000000/api-settings.png)
+
+## Autenticação JWT
+
+Nossa autenticação é baseada em tokens JWT, eliminando a necessidade de armazenar tokens em nosso sistema. Basta autenticar com suas credenciais e usar o token JWT recebido para acessar os endpoints autenticados.
+
+</div>
